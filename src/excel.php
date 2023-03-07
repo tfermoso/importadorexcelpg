@@ -19,7 +19,7 @@ class Excel
 
         return $resultado;
     }
-    public static function obtieneColumnas($archivo,$array_columnas)
+    public static function obtieneColumnas($archivo,$array_columnas,$primera_fila)
     { 
         $spreadsheet = IOFactory::load($archivo);
         $worksheet = $spreadsheet->getSheet(0);
@@ -32,12 +32,13 @@ class Excel
             $fila[]=$valor;
         }
         $datos[]=$fila;
-        $resultado = array_slice($datos, 0,10);
+        $resultado = array_slice($datos, $primera_fila,10);
 
      }
-
+return $resultado;
     }
 
 
 }
+
 ?>
