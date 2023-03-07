@@ -2,7 +2,7 @@
 require './vendor/autoload.php';
 require_once './src/excel.php';
 require_once './src/Conexion.php';
-
+$nombre_fichero="";
 if (isset($_FILES['archivo'])) {
     $ext = strtolower(substr($_FILES['archivo']['name'], -4));
     $new_name = date("Y.m.d-H.i.s");
@@ -12,6 +12,7 @@ if (isset($_FILES['archivo'])) {
     if (!file_exists($url_insert)) {
         mkdir($url_insert, 0777, true);
     };
+    $nombre_fichero=$new_name . '.xlsx';
     move_uploaded_file($_FILES['archivo']['tmp_name'], $dir . $new_name . '.xlsx');
     $archivo = $dir . $new_name . '.xlsx';
     $productos = Excel::obtieneFilas($archivo);
@@ -36,10 +37,11 @@ if (isset($_FILES['archivo'])) {
     <div>
         <h1><strong>Subir Archivos</strong></h1>
     </div>
-    <form class="form-control" action="" method="post" enctype="multipart/form-data">
+    <form class="form-control" id="formulario" action="" method="post" enctype="multipart/form-data">
         <label class="form-group" for=""></label>
         <input class="form-group" type="file" name="archivo" id="archivo">
         <button class="btn btn-primary" type="submit">Subir archivo</button>
+        <input type="hidden" name="" id="nombre_fichero" value='<?=$nombre_fichero ?>'>
     </form>
     <?php
     $contenido='
@@ -101,6 +103,10 @@ if (isset($_FILES['archivo'])) {
         </tbody>
     </table>
     <script>
+        document.getElementById("formulario").onsubmit=(e)=>{
+            let ficher=document.getElementById("archivo").value.split("\\");
+            document.cookie="fichero="+ficher[ficher.length-1];
+        }
         document.getElementById("btn-enviar").onclick = function() {
 
             var selects = document.getElementsByClassName("columna");
@@ -112,9 +118,11 @@ if (isset($_FILES['archivo'])) {
                 }
             }
             var primera_fila=document.getElementById("primera_fila").value;
+            let fichero=document.getElementById("nombre_fichero").value;
             var datos={
                 primera_fila: primera_fila,
-                columnas: columnas
+                columnas: columnas,
+                fichero: fichero
             }
             //Hacer peticion fetch
             fetch("importar.php",{
@@ -134,6 +142,7 @@ if (isset($_FILES['archivo'])) {
             console.log(datos);
 
         };
+        
     </script>
 
 </body>
