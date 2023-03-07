@@ -19,6 +19,24 @@ class Excel
 
         return $resultado;
     }
+    public static function obtieneColumnas($archivo,$array_columnas)
+    { 
+        $spreadsheet = IOFactory::load($archivo);
+        $worksheet = $spreadsheet->getSheet(0);
+        $columnas = $array_columnas;
+        $filas = $worksheet->toArray();
+     foreach ($filas as $row ) {
+        $fila=[];
+        foreach ($columnas as $col) {
+            $valor=$row[$col]??'';
+            $fila[]=$valor;
+        }
+        $datos[]=$fila;
+        $resultado = array_slice($datos, 0,10);
+
+     }
+
+    }
 
 
 }
