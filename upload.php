@@ -32,7 +32,7 @@ if (isset($_FILES['archivo'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 
-<body>
+<body class="container">
     <div>
         <h1><strong>Subir Archivos</strong></h1>
     </div>
@@ -45,7 +45,7 @@ if (isset($_FILES['archivo'])) {
     $contenido='
     <div class="row">
         <div class="col-3">
-            <input type="number" id="primera_fila" placeholder="Primera fila">
+            <input class="form-control" type="number" id="primera_fila" placeholder="Primera fila">
         </div>
         <div class="col-3">
             <button id="btn-enviar" class="btn btn-success">Importar</button>
@@ -111,7 +111,27 @@ if (isset($_FILES['archivo'])) {
                     columnas.push([selects.item(i).id, selects.item(i).value]);
                 }
             }
-            console.log(columnas);
+            var primera_fila=document.getElementById("primera_fila").value;
+            var datos={
+                primera_fila: primera_fila,
+                columnas: columnas
+            }
+            //Hacer peticion fetch
+            fetch("importar.php",{
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            })
+            .then((dat)=>{ return dat.text()})
+            .then((res)=>{
+                console.log(res)
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+            console.log(datos);
 
         };
     </script>
