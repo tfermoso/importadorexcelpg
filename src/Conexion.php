@@ -20,5 +20,9 @@ class Conexion{
         }
         return $columnas;
     }
+    public function executeQuery($consulta){
+        $resultado=$this->conn->query($consulta);
+        return $resultado->rowCount();
+    }
     
 };
