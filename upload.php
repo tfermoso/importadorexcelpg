@@ -31,6 +31,14 @@ if (isset($_FILES['archivo'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seleccionar Archivo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+<style>
+    .ocultar{
+        display: none;
+    }
+    .mostrar{
+        display: inline;
+    }
+</style>
 </head>
 
 <body class="container">
@@ -50,7 +58,8 @@ if (isset($_FILES['archivo'])) {
             <input class="form-control" type="number" id="primera_fila" placeholder="Primera fila">
         </div>
         <div class="col-3">
-            <button id="btn-enviar" class="btn btn-success">Importar</button>
+        
+            <button id="btn-enviar" class="btn btn-success"><span id="spiner" class=" ocultar spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Importar</button>
         </div>
     </div>';
     if(isset($productos)){
@@ -125,6 +134,7 @@ if (isset($_FILES['archivo'])) {
                 fichero: fichero
             }
             //Hacer peticion fetch
+            document.getElementById("spiner").classList.remove("ocultar")
             fetch("importar.php",{
                 method:'POST',
                 headers:{
@@ -134,6 +144,9 @@ if (isset($_FILES['archivo'])) {
             })
             .then((dat)=>{ return dat.text()})
             .then((res)=>{
+                if(res>0){
+                    location=location;
+                }
                 console.log(res)
             })
             .catch(err=>{

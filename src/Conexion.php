@@ -11,7 +11,7 @@ class Conexion{
         
     }
     public function getcolumns($tabla){
-        $consulta="SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name   = '".$tabla."' ";
+        $consulta="SELECT column_name,data_type FROM information_schema.columns WHERE table_schema = 'public' AND table_name   = '".$tabla."' ";
         $resultado=$this->conn->query($consulta);
         $col_tem=$resultado->fetchAll(PDO::FETCH_ASSOC);
         $columnas=array();
@@ -26,3 +26,4 @@ class Conexion{
     }
     
 };
+
